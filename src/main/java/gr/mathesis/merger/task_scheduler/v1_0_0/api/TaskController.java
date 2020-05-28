@@ -1,7 +1,7 @@
-package com.mathesis.merger.TaskScheduler.v100.api;
+package gr.mathesis.merger.task_scheduler.v1_0_0.api;
 
-import com.mathesis.merger.TaskScheduler.v100.mathesis.model.Task;
-import com.mathesis.merger.TaskScheduler.v100.service.TaskService;
+import gr.mathesis.merger.task_scheduler.v1_0_0.mathesis.model.Task;
+import gr.mathesis.merger.task_scheduler.v1_0_0.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,8 +23,8 @@ public class TaskController {
     }
 
     @GetMapping
-    public List<Task> listAllTasks(){
-        return taskService.listAllTasks();
+    public List<Task> listAllTasks(@RequestParam(value = "priorityOrDate") boolean priorityOrDate){
+        return taskService.listAllTasks(priorityOrDate);
     }
 
     @GetMapping(path = "{id}")

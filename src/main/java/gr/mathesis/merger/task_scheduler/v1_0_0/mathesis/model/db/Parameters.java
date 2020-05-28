@@ -1,4 +1,4 @@
-package com.mathesis.merger.TaskScheduler.v100.mathesis.model.db;
+package gr.mathesis.merger.task_scheduler.v1_0_0.mathesis.model.db;
 
 import java.io.File;
 import java.util.prefs.*;

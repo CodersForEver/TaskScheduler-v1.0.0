@@ -1,8 +1,8 @@
-package com.mathesis.merger.TaskScheduler.v100;
+package gr.mathesis.merger.task_scheduler.v1_0_0;
 
 import java.time.LocalDate;
 
-import com.mathesis.merger.TaskScheduler.v100.mathesis.model.Task;
+import gr.mathesis.merger.task_scheduler.v1_0_0.mathesis.model.Task;
 import org.junit.After;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;

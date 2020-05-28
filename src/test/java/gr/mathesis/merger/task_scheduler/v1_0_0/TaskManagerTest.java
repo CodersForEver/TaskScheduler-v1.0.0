@@ -1,11 +1,11 @@
-package com.mathesis.merger.TaskScheduler.v100;
+package gr.mathesis.merger.task_scheduler.v1_0_0;
 
 import java.time.LocalDate;
 import java.util.List;
 
-import com.mathesis.merger.TaskScheduler.v100.mathesis.model.Task;
-import com.mathesis.merger.TaskScheduler.v100.mathesis.model.TaskManager;
-import com.mathesis.merger.TaskScheduler.v100.mathesis.model.TaskManagerInterface;
+import gr.mathesis.merger.task_scheduler.v1_0_0.mathesis.model.Task;
+import gr.mathesis.merger.task_scheduler.v1_0_0.mathesis.model.TaskManager;
+import gr.mathesis.merger.task_scheduler.v1_0_0.mathesis.model.TaskManagerInterface;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;

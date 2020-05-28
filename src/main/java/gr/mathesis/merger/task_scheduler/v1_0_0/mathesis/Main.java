@@ -1,8 +1,8 @@
-package com.mathesis.merger.TaskScheduler.v100.mathesis;
+package gr.mathesis.merger.task_scheduler.v1_0_0.mathesis;
 
-import com.mathesis.merger.TaskScheduler.v100.mathesis.model.Task;
-import com.mathesis.merger.TaskScheduler.v100.mathesis.model.TaskManagerInterface;
-import com.mathesis.merger.TaskScheduler.v100.mathesis.model.db.TaskManagerDB;
+import gr.mathesis.merger.task_scheduler.v1_0_0.mathesis.model.Task;
+import gr.mathesis.merger.task_scheduler.v1_0_0.mathesis.model.TaskManagerInterface;
+import gr.mathesis.merger.task_scheduler.v1_0_0.mathesis.model.db.TaskManagerDB;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;

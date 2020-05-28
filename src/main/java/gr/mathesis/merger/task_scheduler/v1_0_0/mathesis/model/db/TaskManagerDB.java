@@ -1,7 +1,7 @@
-package com.mathesis.merger.TaskScheduler.v100.mathesis.model.db;
+package gr.mathesis.merger.task_scheduler.v1_0_0.mathesis.model.db;
 
-import com.mathesis.merger.TaskScheduler.v100.mathesis.model.Task;
-import com.mathesis.merger.TaskScheduler.v100.mathesis.model.TaskManagerInterface;
+import gr.mathesis.merger.task_scheduler.v1_0_0.mathesis.model.Task;
+import gr.mathesis.merger.task_scheduler.v1_0_0.mathesis.model.TaskManagerInterface;
 import org.springframework.stereotype.Repository;
 
 import java.io.File;

@@ -1,7 +1,7 @@
-package com.mathesis.merger.TaskScheduler.v100.service;
+package gr.mathesis.merger.task_scheduler.v1_0_0.service;
 
-import com.mathesis.merger.TaskScheduler.v100.mathesis.model.Task;
-import com.mathesis.merger.TaskScheduler.v100.mathesis.model.TaskManagerInterface;
+import gr.mathesis.merger.task_scheduler.v1_0_0.mathesis.model.Task;
+import gr.mathesis.merger.task_scheduler.v1_0_0.mathesis.model.TaskManagerInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -21,8 +21,8 @@ public class TaskService {
         taskManager.addTask(task);
     }
 
-    public List<Task> listAllTasks(){
-        return taskManager.listAllTasks(false);
+    public List<Task> listAllTasks(boolean priorityOrDate){
+        return taskManager.listAllTasks(priorityOrDate);
     }
 
     public Task findTask(int id ){

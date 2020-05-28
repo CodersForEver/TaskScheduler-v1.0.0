@@ -12,7 +12,7 @@
 	<artifactId>TaskScheduler-v1.0.0</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>TaskScheduler-v1.0.0</name>
-	<description>Demo project for Spring Boot</description>
+	<description>TaskScheduler project for Spring Boot</description>
 
 	<properties>
 		<java.version>11</java.version>

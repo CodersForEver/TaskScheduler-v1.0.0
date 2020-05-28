@@ -1,4 +1,4 @@
-package com.mathesis.merger.TaskScheduler.v100;
+package gr.mathesis.merger.task_scheduler.v1_0_0;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
