@@ -1,9 +1,8 @@
-package gr.cup.mathesis;
+package com.mathesis.merger.TaskScheduler.v100.mathesis;
 
-import gr.cup.mathesis.model.Task;
-import gr.cup.mathesis.model.TaskManager;
-import gr.cup.mathesis.model.TaskManagerInterface;
-import gr.cup.mathesis.model.db.TaskManagerDB;
+import com.mathesis.merger.TaskScheduler.v100.mathesis.model.Task;
+import com.mathesis.merger.TaskScheduler.v100.mathesis.model.TaskManagerInterface;
+import com.mathesis.merger.TaskScheduler.v100.mathesis.model.db.TaskManagerDB;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;

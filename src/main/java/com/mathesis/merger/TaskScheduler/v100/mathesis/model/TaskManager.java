@@ -1,4 +1,6 @@
-package gr.cup.mathesis.model;
+package com.mathesis.merger.TaskScheduler.v100.mathesis.model;
+
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,12 +15,13 @@ import java.util.stream.Collectors;
  * 
  * @author mathesis
  */
+@Repository("inMemory")
 public final class TaskManager implements TaskManagerInterface {
 
     private static TaskManager INSTANCE;
     private List<Task> tasks = new ArrayList<>();
 
-    private TaskManager() {
+    public TaskManager() {
     }
 
     public static TaskManager getInstance() {

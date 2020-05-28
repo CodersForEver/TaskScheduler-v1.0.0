@@ -1,4 +1,6 @@
-package gr.cup.mathesis.model;
+package com.mathesis.merger.TaskScheduler.v100.mathesis.model;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -48,7 +50,14 @@ public class Task {
      * @param comments Comments
      * @param completed Defines if the task is completed
      */
-    public Task(String desc, int priority, LocalDate dueDate, boolean alert, int daysBefore, String comments, boolean completed) {
+    public Task(
+            @JsonProperty("desc") String desc,
+            @JsonProperty("priority") int priority,
+            @JsonProperty("dueDate") LocalDate dueDate,
+            @JsonProperty("alert") boolean alert,
+            @JsonProperty("daysBefore") int daysBefore,
+            @JsonProperty("comments") String comments,
+            @JsonProperty("completed") boolean completed) {
         id = ++autoIndex;
         description = desc;
         this.priority = priority;

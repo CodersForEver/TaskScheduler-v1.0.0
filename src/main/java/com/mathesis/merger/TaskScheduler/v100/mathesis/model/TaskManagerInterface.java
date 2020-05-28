@@ -1,4 +1,4 @@
-package gr.cup.mathesis.model;
+package com.mathesis.merger.TaskScheduler.v100.mathesis.model;
 
 import java.util.List;
 

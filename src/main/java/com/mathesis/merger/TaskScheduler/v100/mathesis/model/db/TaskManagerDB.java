@@ -1,7 +1,8 @@
-package gr.cup.mathesis.model.db;
+package com.mathesis.merger.TaskScheduler.v100.mathesis.model.db;
 
-import gr.cup.mathesis.model.Task;
-import gr.cup.mathesis.model.TaskManagerInterface;
+import com.mathesis.merger.TaskScheduler.v100.mathesis.model.Task;
+import com.mathesis.merger.TaskScheduler.v100.mathesis.model.TaskManagerInterface;
+import org.springframework.stereotype.Repository;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -18,14 +19,15 @@ import java.util.Properties;
  *
  * @author Mathesis
  */
+@Repository("hsql")
 public final class TaskManagerDB implements TaskManagerInterface {
 
     private Connection con;
     private static TaskManagerDB INSTANCE;
     private final Properties properties;
 
-    private TaskManagerDB() {
-        properties = readProperties("db.properties");
+    public TaskManagerDB() {
+        properties = readProperties("src\\main\\resources\\db.properties");
         connect();
     }
 

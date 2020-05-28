@@ -1,6 +1,8 @@
-package gr.cup.mathesis.model;
+package com.mathesis.merger.TaskScheduler.v100;
 
 import java.time.LocalDate;
+
+import com.mathesis.merger.TaskScheduler.v100.mathesis.model.Task;
 import org.junit.After;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
