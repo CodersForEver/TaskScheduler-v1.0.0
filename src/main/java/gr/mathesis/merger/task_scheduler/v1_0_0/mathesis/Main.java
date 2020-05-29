@@ -40,13 +40,15 @@ import java.util.logging.Level;
  */
 public class Main {
 
-//    private static final TaskManagerInterface TASK_MANAGER = TaskManager.getInstance();
+    //region Declarations
+    //    private static final TaskManagerInterface TASK_MANAGER = TaskManager.getInstance();
     private static final TaskManagerInterface TASK_MANAGER = TaskManagerDB.getInstance();
     private static final String PROMPT = "-> ";
     private static final String TASK_ID_PROMPT = "Task id (or 0 for main menu): ";
     // scanner to allow to press ENTER
     private static final Scanner IN = new Scanner(System.in).useDelimiter("(\\b|\\B)");
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    //endregion
 
     /**
      * @param args the command line arguments
@@ -67,6 +69,7 @@ public class Main {
         displayAlerts();
         int answer = -1;
         do {
+            //region Main Menu Display
             System.out.println("");
             System.out.println("=========== MENU ==============");
             System.out.println("== 1. List tasks by due date ==");
@@ -82,6 +85,7 @@ public class Main {
             System.out.println("== 11. Export as XML ==========");
             System.out.println("== 0. Exit ====================");
             System.out.println("===============================");
+            //endregion
             do {
                 System.out.print(PROMPT);
                 try {

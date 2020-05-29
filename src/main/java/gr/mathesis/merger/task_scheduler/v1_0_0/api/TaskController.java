@@ -31,4 +31,16 @@ public class TaskController {
     public Task findTask(@PathVariable("id") int id){
         return taskService.findTask(id);
     }
+
+    @GetMapping
+    public List<Task> searchForTask(@RequestParam(value = "search") String search){
+        return taskService.searchForTask(search);
+    }
+
+    @PutMapping(path = "{id}")
+    public void editTask(@RequestParam(value = "edit") boolean edit, @PathVariable("id") int id, @RequestBody Task updatedTask){
+        if(edit){
+            taskService.editTask(id, updatedTask);
+        }
+    }
 }
