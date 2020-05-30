@@ -44,7 +44,7 @@ public class TaskService {
         return listAllTasks(false)
                 .stream()
                 .filter(task -> task.getDescription().contains(desc))
-                .collect(Collectors.toList());
+                .collect(Collectors.toUnmodifiableList());
     }
 
     public int editTask(int id, Task updatedTask) {
@@ -95,7 +95,10 @@ public class TaskService {
     }
 
     public List<Task> listTasksWithAlert(){
-        return taskManager.listTasksWithAlert();
+        return taskManager.listTasksWithAlert()
+                .stream()
+                .filter(t -> (t.isLate() <= t.getDaysBefore() && !t.isCompleted()))
+                .collect(Collectors.toUnmodifiableList());
     }
 }
 
