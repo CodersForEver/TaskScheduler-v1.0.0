@@ -35,12 +35,6 @@ public class TaskService {
     }
 
     public List<Task> searchForTask(String desc) {
-//        List<Task> search = new ArrayList<>();
-//        for (Task task : listAllTasks(false)) {
-//            if (task.getDescription().contains(desc)) {
-//                search.add(task);
-//            }
-//        }
         return listAllTasks(false)
                 .stream()
                 .filter(task -> task.getDescription().contains(desc))
@@ -80,21 +74,21 @@ public class TaskService {
         return 0;
     }
 
-    public int removeTask(int id){
+    public int removeTask(int id) {
         taskManager.removeTask(id);
         return 1;
     }
 
-    public int markAsCompleted(int id, boolean completed){
+    public int markAsCompleted(int id, boolean completed) {
         taskManager.markAsCompleted(id, completed);
         return 1;
     }
 
-    public List<Task> listCompletedTasks(){
+    public List<Task> listCompletedTasks() {
         return taskManager.listCompletedTasks();
     }
 
-    public List<Task> listTasksWithAlert(){
+    public List<Task> listTasksWithAlert() {
         return taskManager.listTasksWithAlert()
                 .stream()
                 .filter(t -> (t.isLate() <= t.getDaysBefore() && !t.isCompleted()))
