@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="UTF-8" />
     <title>Task Scheduler v1.0.0</title>
+    <script src="/javascript/engine.js" defer></script>
   </head>
   <body>
     <div id="topView">
@@ -13,21 +14,28 @@
       <button id="searchBtn"><img src="#" alt="Search" /></button>
       <label id="clock">this is the clock</label>
     </div>
+
     <div id="addNew">Add new task <button>+</button></div>
+
     <div id="listView">
+      <!-- TODO: define values for the api -->
       <label for="completed">Show Completed</label>
-      <input type="radio" id="completed" value="true" />
+      <input type="radio" id="completed" name="sort" value="true" />
       <label for="alerts">Show Alerts</label>
-      <input type="radio" id="alerts" />
-      <label> Show by:</label>
+      <input type="radio" id="alerts" name="sort" />
+      <label> Sort by:</label>
       <label for="byPriority">Priority</label>
-      <input type="radio" id="byPriority" value="true" />
+      <input type="radio" id="byPriority" name="sort" value="true" />
       <label for="byDate">Date</label>
-      <input type="radio" id="byDate" value="false" />
+      <input type="radio" id="byDate" name="sort" value="false" checked />
+
       <ul>
         <li>test</li>
       </ul>
     </div>
-    <!-- TODO Make the side panel like a bubble with details -->
+
+    <!-- TODO: Make the side panel like a bubble with details -->
+    <div id="detailsLabel">Details</div>
+    <div id="details"></div>
   </body>
 </html>
