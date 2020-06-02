@@ -18,19 +18,28 @@
     <div id="addNew">Add new task <button>+</button></div>
 
     <div id="listView">
-      <!-- TODO: define values for the api -->
       <label for="completed">Show Completed</label>
-      <input type="radio" id="completed" name="sort" value="true" />
+      <input type="radio" id="completed" name="sort" value="/completed" />
       <label for="alerts">Show Alerts</label>
-      <input type="radio" id="alerts" name="sort" />
+      <input type="radio" id="alerts" name="sort" value="/hasAlert" />
       <label> Sort by:</label>
       <label for="byPriority">Priority</label>
-      <input type="radio" id="byPriority" name="sort" value="true" />
+      <input
+        type="radio"
+        id="byPriority"
+        name="sort"
+        value="?priorityOrDate=true"
+      />
       <label for="byDate">Date</label>
-      <input type="radio" id="byDate" name="sort" value="false" checked />
+      <input
+        type="radio"
+        id="byDate"
+        name="sort"
+        value="?priorityOrDate=false"
+        checked
+      />
 
       <ul>
-        <li>test</li>
       </ul>
     </div>
 

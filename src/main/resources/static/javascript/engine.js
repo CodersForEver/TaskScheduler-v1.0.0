@@ -3,7 +3,6 @@ const list = document.querySelector("ul");
 const url = "/api/v1/tasks";
 const http = new XMLHttpRequest();
 
-// TODO: fix onload to get the value of the radio button
 window.onload = loadData();
 
 for (let i = 0; i < radioBtn.length; i++) {
@@ -17,7 +16,12 @@ function loadData() {
     list.removeChild(list.lastElementChild);
   }
 
-  let apiCmd = url + "?priorityOrDate=" + this.value;
+  let command = this.value;
+  if (typeof command == "undefined") {
+    command = document.querySelector("input[name=sort]:checked").value;
+  }
+
+  let apiCmd = url + command;
   console.debug(radioBtn.value);
   console.debug(apiCmd);
   http.onreadystatechange = function () {
