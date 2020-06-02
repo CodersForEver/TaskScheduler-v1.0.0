@@ -1,13 +1,19 @@
 const radioBtn = document.querySelectorAll("input[name=sort]");
+const addBtn = document.querySelector("#addBtn");
 const list = document.querySelector("ul");
+const details = document.querySelector("#details");
 const url = "/api/v1/tasks";
 const http = new XMLHttpRequest();
 
 window.onload = loadData();
 
+//#region Event handlers
 for (let i = 0; i < radioBtn.length; i++) {
   radioBtn[i].addEventListener("click", loadData);
 }
+
+addBtn.addEventListener("click", createAddForm);
+//#endregion
 
 function loadData() {
   console.debug("call loadData");
@@ -60,4 +66,48 @@ function toShortString(obj) {
     "Due Date: " +
     obj.dueDate
   );
+}
+
+// TODO: add functionality to the field add labels and names
+function createAddForm() {
+  let addForm = createForm("addForm");
+  let desc = createInput("text", "desc");
+  let priority = createInput("text", "priority");
+  let dueDate = createInput("date", "dueDate");
+  dueDate.setAttribute("value", new Date().toJSON().split("T")[0]);
+  let alert = createInput("checkbox", "alert");
+  alert.setAttribute("value", true);
+  let daysBefore = createInput("text", "daysBefore");
+  let comments = document.createElement("textarea");
+  comments.setAttribute("id", "comments");
+  comments.setAttribute("placeHolder", "Your Comments Here...");
+  let completed = createInput("checkbox", "completed");
+  completed.setAttribute("value", true);
+  let add = createInput("button", "add");
+  let cancel = createInput("button", "cancel");
+
+  addForm.appendChild(desc);
+  addForm.appendChild(priority);
+  addForm.appendChild(dueDate);
+  addForm.appendChild(alert);
+  addForm.appendChild(daysBefore);
+  addForm.appendChild(comments);
+  addForm.appendChild(completed);
+  addForm.appendChild(add);
+  addForm.appendChild(cancel);
+
+  details.appendChild(addForm);
+}
+function createForm(id) {
+  let form = document.createElement("form");
+  form.setAttribute("id", id);
+  return form;
+}
+
+function createInput(type, id) {
+  console.debug("input attributes:", type, id);
+  let element = document.createElement("INPUT");
+  element.setAttribute("type", type);
+  element.setAttribute("id", id);
+  return element;
 }
