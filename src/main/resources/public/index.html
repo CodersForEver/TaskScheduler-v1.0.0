@@ -1,49 +1,49 @@
 <!DOCTYPE html>
 <html lang="gr">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta charset="UTF-8" />
-        <title>Task Scheduler v1.0.0</title>
-        <script src="/javascript/engine.js" defer></script>
-    </head>
-    <body>
-        <div id="topView">
-            <h1>Task Scheduler</h1>
-            <input type="text" placeholder="Search" />
-            <button id="searchBtn"><img src="#" alt="Search" /></button>
-            <label id="clock">this is the clock</label>
-        </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8" />
+    <title>Task Scheduler v1.0.0</title>
+    <script src="/javascript/engine.js" defer></script>
+  </head>
+  <body>
+    <div id="topView">
+      <h1>Task Scheduler</h1>
+      <input type="text" placeholder="Search" />
+      <button id="searchBtn"><img src="#" alt="Search" /></button>
+      <label id="clock">this is the clock</label>
+    </div>
 
-        <div id="addNew">Add new task <button id="addBtn">+</button></div>
+    <div id="addNew">Add new task <button id="addBtn">+</button></div>
 
-        <div id="listView">
-            <label for="completed">Show Completed</label>
-            <input type="radio" id="completed" name="sort" value="/completed" />
-            <label for="alerts">Show Alerts</label>
-            <input type="radio" id="alerts" name="sort" value="/hasAlert" />
-            <label> Sort by:</label>
-            <label for="byPriority">Priority</label>
-            <input
-                type="radio"
-                id="byPriority"
-                name="sort"
-                value="?priorityOrDate=true"
-            />
-            <label for="byDate">Date</label>
-            <input
-                type="radio"
-                id="byDate"
-                name="sort"
-                value="?priorityOrDate=false"
-                checked
-            />
+    <div id="listView">
+      <label for="completed">Show Completed</label>
+      <input type="radio" id="completed" name="sort" value="/completed" />
+      <label for="alerts">Show Alerts</label>
+      <input type="radio" id="alerts" name="sort" value="/hasAlert" />
+      <label> Sort by:</label>
+      <label for="byPriority">Priority</label>
+      <input
+        type="radio"
+        id="byPriority"
+        name="sort"
+        value="?priorityOrDate=true"
+      />
+      <label for="byDate">Date</label>
+      <input
+        type="radio"
+        id="byDate"
+        name="sort"
+        value="?priorityOrDate=false"
+        checked
+      />
 
-            <ul></ul>
-        </div>
+      <ul></ul>
+    </div>
 
-        <!-- TODO: Make the side panel like a bubble with details -->
-        <div id="detailsLabel">Details</div>
-        <div id="details"></div>
-    </body>
+    <!-- TODO: Make the side panel like a bubble with details -->
+    <div id="detailsLabel">Details</div>
+    <div id="details"></div>
+  </body>
 </html>
