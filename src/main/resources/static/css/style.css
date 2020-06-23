@@ -1,0 +1,22 @@
+#container {
+    display: flex;
+    justify-content: stretch;
+}
+
+#detailsLabel {
+    margin-left: 5em;
+}
+
+#details {
+    margin-left: 1em;
+}
+
+#addForm {
+    display: flex;
+    flex-direction: column;
+}
+
+#add,
+#cancel {
+    flex-direction: row;
+}
