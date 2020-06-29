@@ -4,6 +4,7 @@ const addBtn = document.querySelector("#addBtn");
 const list = document.querySelector("ul");
 const details = document.querySelector("#details");
 let activeForm = null;
+let formElements = null;
 const url = "/api/v1/tasks";
 const http = new XMLHttpRequest();
 
@@ -77,6 +78,9 @@ function startClock() {
  */
 function fillList(myArr) {
   console.debug("call fillList");
+  if (activeForm !== null) {
+    cleanForm();
+  }
   for (let i = 0; i < myArr.length; i++) {
     list.appendChild(createListItem(myArr[i]));
   }
@@ -120,57 +124,22 @@ function toShortString(obj) {
  * (Rewired to be used as a callback for add event)
  */
 function createAddForm() {
-  // let addForm = createForm("addForm");
-  // var desc = createInput("text", "desc");
-  // var priority = createInput("text", "priority");
-  // let currentDate = new Date().toJSON().split("T")[0];
-  // var dueDate = createInput("date", "dueDate");
-  // dueDate.setAttribute("value", currentDate);
-  // dueDate.setAttribute("min", currentDate);
-  // var hasAlert = createInput("checkbox", "alert");
-  // hasAlert.setAttribute("value", true);
-  // var daysBefore = createInput("text", "daysBefore");
-  // var comments = document.createElement("textarea");
-  // comments.setAttribute("id", "comments");
-  // comments.setAttribute("placeHolder", "Your Comments Here...");
-  // var completed = createInput("checkbox", "isCompleted");
-  // completed.setAttribute("value", true);
-  // let add = createInput("button", "add", "Προσθήκη");
-  // let cancel = createInput("button", "cancel", "Ακύρωση");
-
-  // //#region addForm assembly
-  // addForm.appendChild(createLabel("desc", "Περιγραφή:"));
-  // addForm.appendChild(desc);
-  // addForm.appendChild(createLabel("priority", "Προτεραιότητα:"));
-  // addForm.appendChild(priority);
-  // addForm.appendChild(createLabel("dueDate", "Ημερομηνία:"));
-  // addForm.appendChild(dueDate);
-  // addForm.appendChild(createLabel("alert", "Υπενθύμιση:"));
-  // addForm.appendChild(hasAlert);
-  // addForm.appendChild(createLabel("daysBefore", "'Υπενθύμιση' Ημέρες πρίν:"));
-  // addForm.appendChild(daysBefore);
-  // addForm.appendChild(createLabel("comments", "Σχόλια:"));
-  // addForm.appendChild(comments);
-  // addForm.appendChild(createLabel("isCompleted", "Ολοκληρώθηκε:"));
-  // addForm.appendChild(completed);
-  // addForm.appendChild(add);
-  // addForm.appendChild(cancel);
-
-  // details.appendChild(addForm);
-  // //#endregion
-  // console.debug(hasAlert);
   if (activeForm !== null) {
     cleanForm();
   }
-  let form = createFullForm("addForm");
-  activeForm = assembleForm(form);
+  formElements = createFullForm("addForm");
+  activeForm = assembleForm(formElements);
 
   //Disable add button when addForm is active
   addBtn.disabled = true;
 }
 
-//Under construction function working so far
-// TODO: Add documentation after verification of function also if createInput() is refactored remove extra settings from this function
+/**
+ * Creates a full form base on the type and optionally sets the content.
+ * @param {String} formType - String that specifies the type of form to be created.
+ * @param {Object} content - Object that holds the values to be inserted to the form elements.
+ * @return {Object} Returns an object that hold the DOM elements for the form.
+ */
 function createFullForm(formType, content = null) {
   let data = {
     id: 0,
@@ -206,38 +175,28 @@ function createFullForm(formType, content = null) {
   );
   let currentDate =
     data.dueDate == "" ? new Date().toJSON().split("T")[0] : data.dueDate;
-  formElement.dueDate = createInput("date", "dueDate");
-  formElement.dueDate.setAttribute("value", currentDate);
-  formElement.dueDate.setAttribute("min", currentDate);
-  formElement.dueDate.readOnly = readonly;
-  let alertData = data.alert == "" ? data.alert : data.alert ? true : false;
-  formElement.hasAlert = createInput("checkbox", "alert");
-  formElement.hasAlert.setAttribute("value", true);
-  if (alertData !== "") {
-    formElement.hasAlert.checked = alertData;
-  }
-  formElement.hasAlert.disabled = readonly;
+  formElement.dueDate = createInput("date", "dueDate", currentDate, readonly);
+  formElement.hasAlert = createInput("checkbox", "alert", data.alert, readonly);
   formElement.daysBefore = createInput(
     "text",
     "daysBefore",
     data.daysBefore,
     readonly
   );
-  formElement.comments = document.createElement("textarea");
-  formElement.comments.setAttribute("id", "comments");
-  formElement.comments.setAttribute("placeHolder", "Your Comments Here...");
-  formElement.comments.value = data.comments;
-  formElement.comments.readOnly = readonly;
-  let completedData =
-    data.completed == "" ? data.completed : data.completed ? true : false;
-  formElement.completed = createInput("checkbox", "isCompleted");
-  formElement.completed.setAttribute("value", true);
-  if (completedData !== "") {
-    formElement.completed.checked = completedData;
-  }
-  formElement.completed.disabled = readonly;
+  formElement.comments = createInput(
+    "textarea",
+    "comments",
+    data.comments,
+    readonly
+  );
+  formElement.completed = createInput(
+    "checkbox",
+    "isCompleted",
+    data.completed,
+    readonly
+  );
 
-  //TODO: Add check for addForm od detailForm for different buttons
+  //TODO: Add check for addForm or detailForm for different buttons
 
   formElement.add = createInput("button", "add", "Προσθήκη", readonly);
   formElement.cancel = createInput("button", "cancel", "Ακύρωση");
@@ -245,8 +204,9 @@ function createFullForm(formType, content = null) {
   return formElement;
 }
 
-//Under construction function working so far
-// TODO: Add documentation after verification of function also probably return formElements object to global scope
+/**
+ * Calls the api and loads the form with the appropriate data.
+ */
 function showDetails() {
   if (activeForm !== null) {
     cleanForm();
@@ -263,8 +223,8 @@ function showDetails() {
       );
       let dataObj = JSON.parse(this.responseText);
       console.debug(dataObj);
-      let form = createFullForm("detailForm", dataObj);
-      activeForm = assembleForm(form, dataObj);
+      formElements = createFullForm("detailForm", dataObj);
+      activeForm = assembleForm(formElements, dataObj);
     }
   };
   let apiPath = url + "/" + parseInt(this.id);
@@ -310,38 +270,49 @@ function createForm(id) {
   return form;
 }
 
-//TODO: Rewrite createInput() Documentation to fit function
-
 /**
  * Creates an input element in the DOM.
- * @summary Creates an input element in the DOM and specifies the type and id by the two string parameters
- * and optionally specifies the text of a button.
+ * @summary Creates an input element in the DOM and specifies the type and id by the two string parameters,
+ * Optionally specifies the text and readonly state.
  * @param {String} type - Specifies what type the input element would be.
  * @param {String} id - Specifies the id attribute of the element to be created.
  * @param {String} text - Specifies the text attribute of a button element to be created default value = empty string.
+ * @param {boolean} readonly - Specifies if the element to be created is readonly.
  * @return {<input> element} Returns an input element in the DOM.
  */
 function createInput(type, id, text = "", readonly = false) {
   console.debug("input attributes:", type, id);
-  let element = document.createElement("INPUT");
-  element.setAttribute("type", type);
-  element.setAttribute("id", id);
 
-  if (readonly) {
-    console.debug(element.id + " Is Readonly");
-    if (type !== "checkbox" || type !== "button") {
-      element.readOnly = readonly;
-    } else {
-      element.disabled = readonly;
+  let element;
+
+  if (type === "textarea") {
+    element = document.createElement("textarea");
+    element.setAttribute("id", id);
+    element.setAttribute("placeHolder", "Your Comments Here...");
+  } else {
+    element = document.createElement("INPUT");
+    element.setAttribute("type", type);
+    element.setAttribute("id", id);
+  }
+
+  if (type === "date") {
+    element.setAttribute("value", text);
+    element.setAttribute("min", text);
+  }
+
+  if (type === "checkbox") {
+    let checkedData = text == "" ? text : text ? true : false;
+    element.setAttribute("value", true);
+    if (checkedData !== "") {
+      element.checked = checkedData;
     }
   }
+
   //TODO: refactor input creator to make all inputs so no additional settings happen inside createFullForm()
   if (type === "button") {
     console.debug("text = ", text);
     element.value = text;
     if (id === "add") {
-      //Test expression
-      element.disabled = readonly;
       element.addEventListener("click", addTask);
     }
     if (id === "cancel") {
@@ -350,6 +321,15 @@ function createInput(type, id, text = "", readonly = false) {
   } else {
     if (text !== "") {
       element.value = text;
+    }
+  }
+
+  if (readonly) {
+    console.debug(element.id + " Is Readonly");
+    if (type === "checkbox" || type === "button") {
+      element.disabled = readonly;
+    } else {
+      element.readOnly = readonly;
     }
   }
   return element;
@@ -372,38 +352,33 @@ function createLabel(id, text) {
 
 //TODO: Add Edit function that takes pre filled input elements and enables edit functionality
 
-//TODO: addTask works but doesn't make sense since the element variables dont exist in the scope also finish documentation after that
-
 /**
- * Gets the values from the form elements.
- * @summary If the description is long, write your summary here. Otherwise, feel free to remove this.
- * @param {ParamDataTypeHere} parameterNameHere - Brief description of the parameter here. Note: For other notations of data types, please refer to JSDocs: DataTypes command.
- * @return {ReturnValueDataTypeHere} Brief description of the returning value here.
+ * Gets the values from the form elements and passes them to the api.
  */
 function addTask() {
   let task = new Object();
 
   //Description validation
-  if (typeof desc.value == "undefined" || desc.value === "") {
+  if (
+    typeof formElements.desc.value == "undefined" ||
+    formElements.desc.value === ""
+  ) {
     alert("Description can not be empty");
     return;
   } else {
-    task.desc = desc.value;
+    task.desc = formElements.desc.value;
   }
-  let priorityLevel = parseInt(priority.value);
+  let priorityLevel = parseInt(formElements.priority.value);
   task.priority =
     isNaN(priorityLevel) || priorityLevel < 1 || priorityLevel > 10
       ? 10
       : priorityLevel;
-  task.dueDate = dueDate.value;
-  let hasAlert = document.querySelector("#alert");
-  task.alert = hasAlert.checked ? true : false;
-  let reminder = parseInt(daysBefore.value);
+  task.dueDate = formElements.dueDate.value;
+  task.alert = formElements.hasAlert ? true : false;
+  let reminder = parseInt(formElements.daysBefore.value);
   task.daysBefore = isNaN(reminder) || reminder < 0 ? 0 : reminder;
-  task.comments = comments.value;
-  let completed = document.querySelector("#isCompleted");
-  console.debug(completed);
-  task.completed = completed.checked ? true : false;
+  task.comments = formElements.comments.value;
+  task.completed = formElements.completed.checked ? true : false;
 
   console.debug(task);
   let httpSend = new XMLHttpRequest();
@@ -430,6 +405,7 @@ function cleanForm() {
   console.debug(activeForm);
   activeForm.remove();
   activeForm = null;
+  formElements = null;
   console.debug(activeForm);
   addBtn.disabled = false;
 }
