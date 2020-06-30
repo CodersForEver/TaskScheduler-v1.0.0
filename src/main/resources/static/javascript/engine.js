@@ -318,7 +318,7 @@ function createInput(type, id, text = "", readonly = false) {
         }
     }
 
-    //TODO: refactor input creator to make all inputs so no additional settings happen inside createFullForm()
+    //TODO: refactor input creator to create Edit button
     if (type === "button") {
         console.debug("text = ", text);
         element.value = text;
