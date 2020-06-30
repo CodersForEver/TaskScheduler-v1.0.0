@@ -34,7 +34,7 @@ import java.util.logging.Logger;
 import java.util.logging.Level;
 
 /**
- * 4. Υλοποιήστε τις μεθόδους με σχόλιο TODO αυτής της κλάσης
+ * 4. Υλοποιήστε τις μεθόδους με σχόλιο
  *
  * @author Mathesis
  */
@@ -355,7 +355,7 @@ public class Main {
     }
 
     /**
-     * 10. Show alerts TODO: daysBefore
+     * 10. Show alerts
      */
     private static void displayAlerts() {
         System.out.println("=".repeat(11) + " Alerts " + "=".repeat(11));
@@ -369,14 +369,14 @@ public class Main {
 
             //Customize message according to days left
             if (daysLeft < 0) {
-                sb.append("is passed Due for " + -daysLeft + " days\n");
+                sb.append("is passed Due for ").append(-daysLeft).append(" days\n");
             } else if (daysLeft == 0) {
                 sb.append("has less than 1 days left\n");
             } else {
-                sb.append("has " + daysLeft + " days left\n");
+                sb.append("has ").append(daysLeft).append(" days left\n");
             }
-            sb.append("[ " + task.getDescription() + " ]\n");
-            sb.append("The due date is " + task.getDueDate());
+            sb.append("[ ").append(task.getDescription()).append(" ]\n");
+            sb.append("The due date is ").append(task.getDueDate());
             System.out.println(sb.toString());
             System.out.println("-".repeat(30));
         }
