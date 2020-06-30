@@ -419,3 +419,5 @@ function cleanForm() {
     console.debug(activeForm);
     addBtn.disabled = false;
 }
+
+//TODO: Add Delete functionality
