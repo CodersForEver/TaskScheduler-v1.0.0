@@ -27,7 +27,7 @@ public final class TaskManagerDB implements TaskManagerInterface {
     private final Properties properties;
 
     public TaskManagerDB() {
-        properties = readProperties("src\\main\\resources\\db.properties");
+        properties = readProperties("src/main/resources/db.properties");
         connect();
     }
 
