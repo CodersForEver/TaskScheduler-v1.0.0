@@ -201,9 +201,20 @@ function createFullForm(formType, content = null) {
         readonly
     );
 
-    //TODO: Add check for addForm or detailForm for different buttons
+    // Check for addForm or detailForm for different buttons
+    if (formType === "detailForm") {
+        formElement.delete = createInput("button", "delete", "Διαγραφή");
+        formElement.edit = createInput("button", "edit", "Επεξεργασία");
+        formElement.save = createInput(
+            "button",
+            "save",
+            "Αποθήκευση",
+            readonly
+        );
+    } else {
+        formElement.add = createInput("button", "add", "Προσθήκη", readonly);
+    }
 
-    formElement.add = createInput("button", "add", "Προσθήκη", readonly);
     formElement.cancel = createInput("button", "cancel", "Ακύρωση");
 
     return formElement;
@@ -245,6 +256,12 @@ function showDetails() {
  */
 function assembleForm(form, dataObj) {
     let showForm = form.form;
+
+    if (showForm.id === "detailForm") {
+        showForm.appendChild(form.delete);
+        showForm.appendChild(form.edit);
+    }
+
     showForm.appendChild(createLabel("desc", "Περιγραφή:"));
     showForm.appendChild(form.desc);
     showForm.appendChild(createLabel("priority", "Προτεραιότητα:"));
@@ -261,7 +278,13 @@ function assembleForm(form, dataObj) {
     showForm.appendChild(form.comments);
     showForm.appendChild(createLabel("isCompleted", "Ολοκληρώθηκε:"));
     showForm.appendChild(form.completed);
-    showForm.appendChild(form.add);
+
+    if (showForm.id === "detailForm") {
+        showForm.appendChild(form.save);
+    } else {
+        showForm.appendChild(form.add);
+    }
+
     showForm.appendChild(form.cancel);
 
     details.appendChild(showForm);
@@ -295,6 +318,77 @@ function createInput(type, id, text = "", readonly = false) {
 
     let element;
 
+    element = setInputType(type, id);
+
+    if (type === "date") {
+        setDateValue(element, text);
+    }
+
+    if (type === "checkbox") {
+        setCheckboxState(text, element);
+    }
+
+    // Check for type of buttons to be created
+    if (type === "button") {
+        setButtonType(text, element, id);
+    } else {
+        if (text !== "") {
+            element.value = text;
+        }
+    }
+
+    if (readonly) {
+        setReadonly(element, type, readonly);
+    }
+    return element;
+}
+
+/**
+ * Set readOnly or disabled state for html elements.
+ * @param {HTMLElement} element - Html element to be set.
+ * @param {String} type - Type of Html Element.
+ * @param {Boolean} readonly - true or false.
+ */
+function setReadonly(element, type, readonly) {
+    console.debug(element.id + " Readonly: " + readonly);
+    if (type === "checkbox" || type === "button") {
+        element.disabled = readonly;
+    } else {
+        element.readOnly = readonly;
+    }
+}
+
+/**
+ * Sets checkbox state.
+ * @param {String | Boolean} text - The state of the checkbox in text or Boolean.
+ * @param {HTMLElement} element - The checkbox element.
+ */
+function setCheckboxState(text, element) {
+    let checkedData = text == "" ? text : text ? true : false;
+    element.setAttribute("value", true);
+    if (checkedData !== "") {
+        element.checked = checkedData;
+    }
+}
+
+/**
+ * Sets the min value and current value of a Date element.
+ * @param {HTMLElement} element - The Html element of type date to set.
+ * @param {String} text - The value of the date in string format.
+ */
+function setDateValue(element, text) {
+    element.setAttribute("value", text);
+    element.setAttribute("min", text);
+}
+
+/**
+ * Selects the type of input to be created from an INPUT or textarea.
+ * @param {String} type - String that defines the type of INPUT to be created.
+ * @param {String} id - The id of the Html element.
+ * @return {HTMLElement} Returns an HtmElement of type INPUT or textarea.
+ */
+function setInputType(type, id) {
+    let element;
     if (type === "textarea") {
         element = document.createElement("textarea");
         element.setAttribute("id", id);
@@ -304,45 +398,34 @@ function createInput(type, id, text = "", readonly = false) {
         element.setAttribute("type", type);
         element.setAttribute("id", id);
     }
-
-    if (type === "date") {
-        element.setAttribute("value", text);
-        element.setAttribute("min", text);
-    }
-
-    if (type === "checkbox") {
-        let checkedData = text == "" ? text : text ? true : false;
-        element.setAttribute("value", true);
-        if (checkedData !== "") {
-            element.checked = checkedData;
-        }
-    }
-
-    //TODO: refactor input creator to create Edit button
-    if (type === "button") {
-        console.debug("text = ", text);
-        element.value = text;
-        if (id === "add") {
-            element.addEventListener("click", addTask);
-        }
-        if (id === "cancel") {
-            element.addEventListener("click", cleanForm);
-        }
-    } else {
-        if (text !== "") {
-            element.value = text;
-        }
-    }
-
-    if (readonly) {
-        console.debug(element.id + " Is Readonly");
-        if (type === "checkbox" || type === "button") {
-            element.disabled = readonly;
-        } else {
-            element.readOnly = readonly;
-        }
-    }
     return element;
+}
+
+/**
+ * Sets the buttons depending of the form type.
+ * @summary Sets the buttons of the associated form type and adds the event listeners to each button.
+ * @param {String} text - The Value ("Text") of the button.
+ * @param {HTMLElement} element - The button HtmlElement to be set.
+ * @param {String} id - The id of the button to select the associated process.
+ */
+function setButtonType(text, element, id) {
+    console.debug("text = ", text);
+    element.value = text;
+    if (id === "save") {
+        element.addEventListener("click", onSaveTask);
+    }
+    if (id === "delete") {
+        element.addEventListener("click", onDeleteTask);
+    }
+    if (id === "edit") {
+        element.addEventListener("click", onEditTask);
+    }
+    if (id === "add") {
+        element.addEventListener("click", addTask);
+    }
+    if (id === "cancel") {
+        element.addEventListener("click", cleanForm);
+    }
 }
 
 /**
@@ -359,8 +442,6 @@ function createLabel(id, text) {
     label.textContent = text;
     return label;
 }
-
-//TODO: Add Edit function that takes pre filled input elements and enables edit functionality
 
 /**
  * Gets the values from the form elements and passes them to the api.
@@ -420,4 +501,39 @@ function cleanForm() {
     addBtn.disabled = false;
 }
 
-//TODO: Add Delete functionality
+function onEditTask() {
+    // TODO: Implement Edit function
+    console.debug("Call Edit State");
+    for (let key in formElements) {
+        setReadonly(formElements[key], formElements[key].type, false);
+    }
+}
+
+function onSaveTask() {
+    // TODO: Implement Sava function
+    let result = window.confirm(
+        "Θέλετε σίγουρα να κάνετε αλλαγές σε αυτήν την εργασία;"
+    );
+    console.debug("Result = " + result);
+    if (result) {
+        // Call saveTask
+        cleanForm();
+    }
+}
+
+function onDeleteTask() {
+    // TODO: Implement Delete task function
+    console.debug("Call Delete Task");
+    let result = window.confirm(
+        "Θέλετε σίγουρα να διαγράψετε αυτήν την εργασία;"
+    );
+    console.debug("Result = " + result);
+    if (result) {
+        // Call deleteTask
+        cleanForm();
+    }
+}
+
+// TODO: Add Edit function that takes pre filled input elements and enables edit functionality
+
+// TODO: Add search function
