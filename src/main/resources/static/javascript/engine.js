@@ -1,16 +1,21 @@
+const searchTerm = document.querySelector("#search");
+const searchBtn = document.querySelector("#searchBtn");
 const clock = document.querySelector("#clock");
 const radioBtn = document.querySelectorAll("input[name=sort]");
 const addBtn = document.querySelector("#addBtn");
 const list = document.querySelector("ul");
 const details = document.querySelector("#details");
+const buttonMenu = document.querySelector("#buttonMenu");
 let activeForm = null;
 let formElements = null;
+let cancelSearch = null;
 const url = "/api/v1/tasks";
 const http = new XMLHttpRequest();
 
 window.onload = loadData();
 
 //#region Event handlers
+searchBtn.addEventListener("click", loadData);
 for (let i = 0; i < radioBtn.length; i++) {
     radioBtn[i].addEventListener("click", loadData);
 }
@@ -33,6 +38,13 @@ function loadData() {
     let command = this.value;
     if (typeof command == "undefined") {
         command = document.querySelector("input[name=sort]:checked").value;
+    } else if (this.id === "searchBtn") {
+        command = "/search?condition=" + searchTerm.value;
+        cancelSearchLbl = createLabel("cancelSearch", "Search:");
+        cancelSearch = createInput("button", "cancelSearch", "X");
+        buttonMenu.appendChild(cancelSearchLbl);
+        buttonMenu.appendChild(cancelSearch);
+        searchTerm.value = "";
     }
 
     let apiCmd = url + command;
@@ -55,6 +67,14 @@ function loadData() {
     http.setRequestHeader("Content-Type", "application/json");
     http.send();
 }
+
+function onCancelSearch() {
+    buttonMenu.removeChild(cancelSearchLbl);
+    buttonMenu.removeChild(cancelSearch);
+    cancelSearch = null;
+    loadData();
+}
+
 /**
  * Implements the clock.
  */
@@ -426,6 +446,11 @@ function setButtonType(text, element, id) {
     if (id === "cancel") {
         element.addEventListener("click", cleanForm);
     }
+    if (id === "cancelSearch") {
+        element.addEventListener("click", onCancelSearch);
+        let hint = searchTerm.value;
+        element.title = "Search Term: " + hint;
+    }
 }
 
 /**
@@ -535,5 +560,3 @@ function onDeleteTask() {
 }
 
 // TODO: Add Edit function that takes pre filled input elements and enables edit functionality
-
-// TODO: Add search function

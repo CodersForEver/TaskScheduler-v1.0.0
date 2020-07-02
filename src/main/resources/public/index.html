@@ -11,7 +11,7 @@
     <body>
         <div id="topView">
             <h1>Task Scheduler</h1>
-            <input type="text" placeholder="Search" />
+            <input type="text" id="search" placeholder="Search" />
             <button id="searchBtn"><img src="#" alt="Search" /></button>
             <label id="clock">this is the clock</label>
         </div>
@@ -20,31 +20,38 @@
 
         <div id="container">
             <div id="listView">
-                <label for="completed">Show Completed</label>
-                <input
-                    type="radio"
-                    id="completed"
-                    name="sort"
-                    value="/completed"
-                />
-                <label for="alerts">Show Alerts</label>
-                <input type="radio" id="alerts" name="sort" value="/hasAlert" />
-                <label> Sort by:</label>
-                <label for="byPriority">Priority</label>
-                <input
-                    type="radio"
-                    id="byPriority"
-                    name="sort"
-                    value="?priorityOrDate=true"
-                />
-                <label for="byDate">Date</label>
-                <input
-                    type="radio"
-                    id="byDate"
-                    name="sort"
-                    value="?priorityOrDate=false"
-                    checked
-                />
+                <div id="buttonMenu">
+                    <label for="completed">Show Completed</label>
+                    <input
+                        type="radio"
+                        id="completed"
+                        name="sort"
+                        value="/completed"
+                    />
+                    <label for="alerts">Show Alerts</label>
+                    <input
+                        type="radio"
+                        id="alerts"
+                        name="sort"
+                        value="/hasAlert"
+                    />
+                    <label> Sort by:</label>
+                    <label for="byPriority">Priority</label>
+                    <input
+                        type="radio"
+                        id="byPriority"
+                        name="sort"
+                        value="?priorityOrDate=true"
+                    />
+                    <label for="byDate">Date</label>
+                    <input
+                        type="radio"
+                        id="byDate"
+                        name="sort"
+                        value="?priorityOrDate=false"
+                        checked
+                    />
+                </div>
 
                 <ul></ul>
             </div>
