@@ -8,6 +8,7 @@ const details = document.querySelector("#details");
 const buttonMenu = document.querySelector("#buttonMenu");
 let activeForm = null;
 let formElements = null;
+let cancelSearchLbl = null;
 let cancelSearch = null;
 const url = "/api/v1/tasks";
 const http = new XMLHttpRequest();
@@ -16,6 +17,7 @@ window.onload = loadData();
 
 //#region Event handlers
 searchBtn.addEventListener("click", loadData);
+
 for (let i = 0; i < radioBtn.length; i++) {
     radioBtn[i].addEventListener("click", loadData);
 }
@@ -28,6 +30,10 @@ addBtn.addEventListener("click", createAddForm);
  */
 function loadData() {
     console.debug("call loadData");
+
+    if (cancelSearch !== null) {
+        onCancelSearch();
+    }
 
     startClock();
 
@@ -68,9 +74,13 @@ function loadData() {
     http.send();
 }
 
+/**
+ * Cancels Search terms and removes X button.
+ */
 function onCancelSearch() {
     buttonMenu.removeChild(cancelSearchLbl);
     buttonMenu.removeChild(cancelSearch);
+    cancelSearchLbl = null;
     cancelSearch = null;
     loadData();
 }
@@ -348,7 +358,6 @@ function createInput(type, id, text = "", readonly = false) {
         setCheckboxState(text, element);
     }
 
-    // Check for type of buttons to be created
     if (type === "button") {
         setButtonType(text, element, id);
     } else {
@@ -431,6 +440,8 @@ function setInputType(type, id) {
 function setButtonType(text, element, id) {
     console.debug("text = ", text);
     element.value = text;
+
+    // Check for type of buttons and add associated event
     if (id === "save") {
         element.addEventListener("click", onSaveTask);
     }
@@ -535,7 +546,7 @@ function onEditTask() {
 }
 
 function onSaveTask() {
-    // TODO: Implement Sava function
+    // TODO: Implement Save function
     let result = window.confirm(
         "Θέλετε σίγουρα να κάνετε αλλαγές σε αυτήν την εργασία;"
     );
