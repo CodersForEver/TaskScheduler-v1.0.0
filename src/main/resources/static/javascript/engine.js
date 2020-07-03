@@ -6,12 +6,14 @@ const addBtn = document.querySelector("#addBtn");
 const list = document.querySelector("ul");
 const details = document.querySelector("#details");
 const buttonMenu = document.querySelector("#buttonMenu");
+
 let activeForm = null;
 let formElements = null;
 let cancelSearchLbl = null;
 let cancelSearch = null;
+let loadedData = null;
+
 const url = "/api/v1/tasks";
-const http = new XMLHttpRequest();
 
 window.onload = loadData();
 
@@ -53,8 +55,9 @@ function loadData() {
         searchTerm.value = "";
     }
 
-    let apiCmd = url + command;
     console.debug(radioBtn.value);
+    let http = new XMLHttpRequest();
+    let apiCmd = url + command;
     console.debug(apiCmd);
 
     http.onreadystatechange = function () {
@@ -171,7 +174,7 @@ function createAddForm() {
  * @return {Object} Returns an object that hold the DOM elements for the form.
  */
 function createFullForm(formType, content = null) {
-    let data = {
+    loadedData = {
         id: 0,
         description: "",
         priority: "",
@@ -187,47 +190,54 @@ function createFullForm(formType, content = null) {
     console.debug("Content: " + content);
     if (content != null) {
         for (let key in content) {
-            data[key] = content[key];
+            loadedData[key] = content[key];
         }
         readonly = true;
     }
-    console.debug("Data: ", data);
+    console.debug("Data: ", loadedData);
 
     let formElement = {};
 
     formElement.form = createForm(formType);
-    formElement.desc = createInput("text", "desc", data.description, readonly);
+    formElement.desc = createInput(
+        "text",
+        "desc",
+        loadedData.description,
+        readonly
+    );
     formElement.priority = createInput(
         "text",
         "priority",
-        data.priority,
+        loadedData.priority,
         readonly
     );
     let currentDate =
-        data.dueDate == "" ? new Date().toJSON().split("T")[0] : data.dueDate;
+        loadedData.dueDate == ""
+            ? new Date().toJSON().split("T")[0]
+            : loadedData.dueDate;
     formElement.dueDate = createInput("date", "dueDate", currentDate, readonly);
     formElement.hasAlert = createInput(
         "checkbox",
         "alert",
-        data.alert,
+        loadedData.alert,
         readonly
     );
     formElement.daysBefore = createInput(
         "text",
         "daysBefore",
-        data.daysBefore,
+        loadedData.daysBefore,
         readonly
     );
     formElement.comments = createInput(
         "textarea",
         "comments",
-        data.comments,
+        loadedData.comments,
         readonly
     );
     formElement.completed = createInput(
         "checkbox",
         "isCompleted",
-        data.completed,
+        loadedData.completed,
         readonly
     );
 
@@ -240,6 +250,12 @@ function createFullForm(formType, content = null) {
             "save",
             "Αποθήκευση",
             readonly
+        );
+        formElement.markCompleted = createInput(
+            "button",
+            "markCompleted",
+            "Ολοκληρώθηκε",
+            loadedData.completed
         );
     } else {
         formElement.add = createInput("button", "add", "Προσθήκη", readonly);
@@ -310,7 +326,7 @@ function assembleForm(form, dataObj) {
     showForm.appendChild(form.completed);
 
     if (showForm.id === "detailForm") {
-        showForm.appendChild(form.save);
+        showForm.appendChild(form.markCompleted);
     } else {
         showForm.appendChild(form.add);
     }
@@ -445,6 +461,9 @@ function setButtonType(text, element, id) {
     if (id === "save") {
         element.addEventListener("click", onSaveTask);
     }
+    if (id === "markCompleted") {
+        element.addEventListener("click", markAsCompleted);
+    }
     if (id === "delete") {
         element.addEventListener("click", onDeleteTask);
     }
@@ -483,6 +502,30 @@ function createLabel(id, text) {
  * Gets the values from the form elements and passes them to the api.
  */
 function addTask() {
+    let task = readData();
+    console.debug(task);
+    let httpSend = new XMLHttpRequest();
+
+    httpSend.open("POST", url, true);
+    httpSend.setRequestHeader("Content-Type", "application/json");
+    httpSend.send(JSON.stringify(task));
+    httpSend.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            console.debug(
+                "response type: " + this.responseType,
+                "response text: " + this.responseText
+            );
+            cleanForm();
+            loadData();
+        }
+    };
+}
+
+/**
+ * Reads the form for data.
+ * @return {Object} Returns an object with the data read from the form elements.
+ */
+function readData() {
     let task = new Object();
 
     //Description validation
@@ -507,22 +550,7 @@ function addTask() {
     task.comments = formElements.comments.value;
     task.completed = formElements.completed.checked ? true : false;
 
-    console.debug(task);
-    let httpSend = new XMLHttpRequest();
-
-    httpSend.open("POST", url, true);
-    httpSend.setRequestHeader("Content-Type", "application/json");
-    httpSend.send(JSON.stringify(task));
-    httpSend.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            console.debug(
-                "response type: " + this.responseType,
-                "response text: " + this.responseText
-            );
-            cleanForm();
-            loadData();
-        }
-    };
+    return task;
 }
 
 /**
@@ -533,41 +561,113 @@ function cleanForm() {
     activeForm.remove();
     activeForm = null;
     formElements = null;
+    if (loadedData !== null) {
+        loadedData = null;
+    }
     console.debug(activeForm);
     addBtn.disabled = false;
 }
 
+/**
+ * Callback function to enable edit mode.
+ */
 function onEditTask() {
-    // TODO: Implement Edit function
     console.debug("Call Edit State");
     for (let key in formElements) {
         setReadonly(formElements[key], formElements[key].type, false);
     }
+    activeForm.replaceChild(formElements.save, formElements.markCompleted);
+    setReadonly(formElements.edit, "button", true);
+    setReadonly(formElements.delete, "button", true);
 }
 
+/**
+ * Sends edited task to the api.
+ */
 function onSaveTask() {
-    // TODO: Implement Save function
     let result = window.confirm(
         "Θέλετε σίγουρα να κάνετε αλλαγές σε αυτήν την εργασία;"
     );
     console.debug("Result = " + result);
     if (result) {
-        // Call saveTask
-        cleanForm();
+        let httpEdit = new XMLHttpRequest();
+
+        let command = url + "/edit/" + loadedData.id;
+        let task = readData();
+
+        httpEdit.open("PUT", command, true);
+        httpEdit.setRequestHeader("Content-Type", "application/json");
+        httpEdit.send(JSON.stringify(task));
+        httpEdit.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                console.debug(
+                    "response type: " + this.responseType,
+                    "response text: " + this.responseText
+                );
+                cleanForm();
+                loadData();
+            }
+        };
     }
 }
 
+/**
+ * Deletes the currently loadedData.
+ */
 function onDeleteTask() {
-    // TODO: Implement Delete task function
     console.debug("Call Delete Task");
     let result = window.confirm(
         "Θέλετε σίγουρα να διαγράψετε αυτήν την εργασία;"
     );
     console.debug("Result = " + result);
+
     if (result) {
-        // Call deleteTask
-        cleanForm();
+        console.debug(loadedData);
+        let httpDel = new XMLHttpRequest();
+
+        let command = url + "/" + loadedData.id;
+
+        httpDel.open("DELETE", command, true);
+        httpDel.setRequestHeader("Content-Type", "application/json");
+        httpDel.send();
+        httpDel.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                console.debug(
+                    "response type: " + this.responseType,
+                    "response text: " + this.responseText
+                );
+                cleanForm();
+                loadData();
+            }
+        };
     }
 }
 
-// TODO: Add Edit function that takes pre filled input elements and enables edit functionality
+/**
+ * Marks currently loaded task as complete.
+ */
+function markAsCompleted() {
+    let result = window.confirm("Αυτήν η εργασία θα ολοκληρωθεί!");
+
+    if (result) {
+        console.debug(loadedData);
+        let httpDel = new XMLHttpRequest();
+
+        let command =
+            url + "/markAsCompleted/" + loadedData.id + "?completed=true";
+
+        httpDel.open("PUT", command, true);
+        httpDel.setRequestHeader("Content-Type", "application/json");
+        httpDel.send();
+        httpDel.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                console.debug(
+                    "response type: " + this.responseType,
+                    "response text: " + this.responseText
+                );
+                cleanForm();
+                loadData();
+            }
+        };
+    }
+}
