@@ -1,6 +1,72 @@
+:root {
+    --bg_color: #efefef;
+    --light_text: #a39d9e;
+    --dark_text: #363b41;
+    --active_color_dark: #ff8494;
+    --active_color_light: #ffa9b7;
+    --box_shadow: 0 0 13px grey;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    background-color: var(--bg_color);
+}
+
+body {
+    margin: 2% 10%;
+}
+
+#topView {
+    display: block;
+    background-color: white;
+    padding: 1rem;
+    border-radius: 15px;
+    box-shadow: var(--box_shadow);
+    width: auto;
+}
+
+#clock {
+    display: inline-block;
+    position: absolute;
+    font-size: 2em;
+    margin-top: -2.2em;
+    border-radius: 5px;
+    background-color: var(--bg_color);
+    box-shadow: var(--box_shadow);
+    padding: 0.5em;
+    align-content: space-around;
+    right: 12%;
+}
+
 #container {
     display: flex;
     justify-content: stretch;
+}
+
+hr {
+    position: relative;
+    right: 0.8%;
+    width: 98%;
+    margin: 1em;
+    margin-top: 2em;
+}
+
+#addNew {
+    /* background-color: greenyellow; */
+    width: max-content;
+    border-radius: 10px;
+    /* box-shadow: var(--box_shadow); */
+    position: relative;
+    margin: 1em 1em 1em 1em;
+    padding: 0.5em;
+    left: 35.3%;
+}
+
+#addBtn {
+    /* background-color: red; */
+    color: white;
+    background-image: radial-gradient(circle, red, magenta, var(--bg_color));
+    font-weight: bold;
+    font-size: 1.5em;
+    border-radius: 50%;
 }
 
 #detailsLabel {
@@ -11,7 +77,6 @@
     margin-left: 1em;
 }
 
-/*  */
 #addForm,
 #detailForm {
     display: flex;
@@ -22,3 +87,136 @@
 #cancel {
     flex-direction: row;
 }
+
+/* Copied content */
+
+/* .calendar {
+    width: 37em;
+    background-color: white;
+    color: var(--dark_text);
+    padding: 2em 3em;
+    box-shadow: var(--box_shadow);
+}
+
+.calendar_header {
+    font-size: 1.2em;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+}
+
+.calendar_subheader {
+    font-size: 2rem;
+    color: var(--light_text);
+}
+
+.calendar_plan {
+    background-image: linear-gradient(
+        to bottom right,
+        var(--active_color_dark),
+        var(--active_color_light)
+    );
+    color: white;
+    margin: 2em 0 4em;
+    padding: 3em;
+    box-shadow: var(--box_shadow);
+}
+
+.day_title {
+    font-size: 2.2em;
+    font-weight: 700;
+}
+
+.day_body {
+    font-size: 2em;
+}
+
+.day_add {
+    margin-left: 20px;
+}
+
+.day_body,
+.day_add {
+    display: inline-block;
+    position: relative;
+    top: -0.5ex;
+}
+
+.plus_sign::before {
+    font-size: 4em;
+    color: var(--light_text);
+    content: "+";
+    background-color: white;
+    position: relative;
+    bottom: -0.5rem;
+    padding: 0 1rem;
+    border-radius: 100%;
+}
+
+.calendar_events {
+    color: var(--light_text);
+}
+
+.calendar_events .event_item,
+.event_item:hover {
+    margin-top: 1.8em;
+    margin-left: 0.5em;
+    padding: 0.5em;
+}
+
+.calendar_events_title {
+    font-size: 2em;
+}
+
+.event_item_dot {
+    display: inline-block;
+    padding: 0.75em;
+    border-radius: 100%;
+    background-color: grey;
+}
+
+.dot_active {
+    background-color: var(--active_color_dark);
+}
+
+.event_item_title {
+    position: relative;
+    bottom: 0.75ex;
+    margin-left: 1em;
+    display: inline-block;
+    color: var(--dark_text);
+}
+
+.event_item_body {
+    font-size: 1.2em;
+    margin-left: 2.083em;
+}
+
+.event_item:hover {
+    cursor: pointer;
+    background-image: linear-gradient(
+        to bottom right,
+        var(--active_color_dark),
+        var(--active_color_light)
+    );
+    color: white;
+    box-shadow: var(--box_shadow);
+}
+
+.event_item:hover * {
+    color: white;
+}
+
+.event_item:hover .event_item_dot {
+    background-color: white;
+}
+
+.contact {
+    color: orange;
+}
+
+.contact::before {
+    content: "@";
+}
+
+.event_item:hover .contact {
+    color: gray;
+} */
