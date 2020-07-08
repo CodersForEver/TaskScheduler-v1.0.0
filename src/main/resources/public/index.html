@@ -22,37 +22,32 @@
 
         <div id="container">
             <div id="listView">
-                <div id="buttonMenu">
-                    <label for="completed">Show Completed</label>
+                <div id="buttonMenu" class="radio-group">
                     <input
                         type="radio"
                         id="completed"
                         name="sort"
                         value="/completed"
-                    />
-                    <label for="alerts">Show Alerts</label>
-                    <input
+                    /><label for="completed">Show Completed</label
+                    ><input
                         type="radio"
                         id="alerts"
                         name="sort"
                         value="/hasAlert"
-                    />
-                    <label> Sort by:</label>
-                    <label for="byPriority">Priority</label>
-                    <input
+                    /><label for="alerts">Show Alerts</label
+                    ><input
                         type="radio"
                         id="byPriority"
                         name="sort"
                         value="?priorityOrDate=true"
-                    />
-                    <label for="byDate">Date</label>
-                    <input
+                    /><label for="byPriority">Priority</label
+                    ><input
                         type="radio"
                         id="byDate"
                         name="sort"
                         value="?priorityOrDate=false"
                         checked
-                    />
+                    /><label for="byDate">Date</label>
                 </div>
 
                 <ul></ul>

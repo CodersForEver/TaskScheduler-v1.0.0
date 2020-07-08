@@ -4,6 +4,9 @@
     --dark_text: #363b41;
     --active_color_dark: #ff8494;
     --active_color_light: #ffa9b7;
+    --radio_color_60: rgba(20, 18, 21, 0.6);
+    --radio_color_20: rgba(20, 18, 21, 0.2);
+    --radio_color_40: rgba(20, 18, 21, 0.4);
     --box_shadow: 0 0 13px grey;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 16px;
@@ -34,6 +37,7 @@ body {
     padding: 0.5em;
     align-content: space-around;
     right: 12%;
+    cursor: default;
 }
 
 #container {
@@ -68,6 +72,40 @@ hr {
     font-size: 1.5em;
     border-radius: 50%;
 }
+
+/* Code Made by Sam Keddy*/
+input[type="radio"] {
+    position: absolute;
+    visibility: hidden;
+    display: none;
+}
+
+label {
+    color: rgb(20, 18, 21);
+    display: inline-block;
+    cursor: pointer;
+    font-weight: bold;
+    padding: 5px 20px;
+}
+
+input[type="radio"]:checked + label {
+    color: var(--radio_color_60);
+    background: var(--radio_color_20);
+}
+
+label + input[type="radio"] + label {
+    border-left: 3px solid var(--radio_color_20);
+}
+
+.radio-group {
+    border: 3px solid var(--radio_color_60);
+    display: inline-block;
+    /* margin-top: 0.2em; */
+    margin-left: 1em;
+    border-radius: 10px;
+    overflow: hidden;
+}
+/* ================================================= */
 
 #detailsLabel {
     margin-left: 5em;
