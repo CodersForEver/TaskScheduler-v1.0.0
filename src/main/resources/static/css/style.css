@@ -56,7 +56,16 @@ body {
     min-height: 0;
 }
 
+#listView {
+    display: flex;
+    flex-direction: column;
+}
+
 ul {
+    padding-left: 0;
+}
+
+#listContent {
     background-color: white;
     border-radius: 5px;
     margin-left: 1.1em;
@@ -106,6 +115,14 @@ hr {
     font-weight: bold;
     font-size: 1.5em;
     border-radius: 50%;
+}
+
+#searchDiv {
+    text-align: center;
+}
+
+#searchDiv label {
+    padding: unset;
 }
 
 /* Code Made by Sam Keddy*/
@@ -164,7 +181,7 @@ label + input[type="radio"] + label {
 }
 
 footer {
-    border: 1px solid black;
+    /* border: 1px solid black; */
     display: block;
     position: relative;
     /* box-sizing: border-box; */

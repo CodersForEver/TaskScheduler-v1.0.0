@@ -3,14 +3,16 @@ const searchBtn = document.querySelector("#searchBtn");
 const clock = document.querySelector("#clock");
 const radioBtn = document.querySelectorAll("input[name=sort]");
 const addBtn = document.querySelector("#addBtn");
+const container = document.querySelector("#container");
+const listView = document.querySelector("#listView");
 const list = document.querySelector("ul");
+const detaiLabel = document.querySelector("#detailsLabel");
 const details = document.querySelector("#details");
 const buttonMenu = document.querySelector("#buttonMenu");
 
 let activeForm = null;
 let formElements = null;
-let cancelSearchLbl = null;
-let cancelSearch = null;
+let searchDiv = null;
 let loadedData = null;
 
 const url = "/api/v1/tasks";
@@ -33,7 +35,7 @@ addBtn.addEventListener("click", createAddForm);
 function loadData() {
     console.debug("call loadData");
 
-    if (cancelSearch !== null) {
+    if (searchDiv !== null) {
         onCancelSearch();
     }
 
@@ -48,10 +50,9 @@ function loadData() {
         command = document.querySelector("input[name=sort]:checked").value;
     } else if (this.id === "searchBtn") {
         command = "/search?condition=" + searchTerm.value;
-        cancelSearchLbl = createLabel("cancelSearch", "Search:");
-        cancelSearch = createInput("button", "cancelSearch", "X");
-        buttonMenu.appendChild(cancelSearchLbl);
-        buttonMenu.appendChild(cancelSearch);
+        searchDiv = createSearchCancelBtn();
+        detaiLabel.style.marginLeft = 0;
+        container.insertBefore(searchDiv, detaiLabel);
         searchTerm.value = "";
     }
 
@@ -77,14 +78,24 @@ function loadData() {
     http.send();
 }
 
+function createSearchCancelBtn() {
+    let div = document.createElement("div");
+    div.setAttribute("id", "searchDiv");
+    div.style.width = "5em";
+    let cancelSearchLbl = createLabel("cancelSearch", "Search:");
+    let cancelSearch = createInput("button", "cancelSearch", "X");
+    div.appendChild(cancelSearchLbl);
+    div.appendChild(cancelSearch);
+    return div;
+}
+
 /**
  * Cancels Search terms and removes X button.
  */
 function onCancelSearch() {
-    buttonMenu.removeChild(cancelSearchLbl);
-    buttonMenu.removeChild(cancelSearch);
-    cancelSearchLbl = null;
-    cancelSearch = null;
+    container.removeChild(searchDiv);
+    searchDiv = null;
+    detaiLabel.style.marginLeft = "5em";
     loadData();
 }
 
